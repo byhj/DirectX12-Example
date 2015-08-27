@@ -120,17 +120,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\d3d\App.cpp" />
-    <ClCompile Include="..\..\include\d3d\Basic-01-Window.cpp" />
-    <ClCompile Include="..\..\include\d3d\RenderSystem.cpp" />
     <ClCompile Include="..\..\include\d3d\Shader.cpp" />
     <ClCompile Include="..\..\include\d3d\Utility.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\d3d\App.h" />
-    <ClInclude Include="..\..\include\d3d\RenderSystem.h" />
     <ClInclude Include="..\..\include\d3d\Shader.h" />
     <ClInclude Include="..\..\include\d3d\Utility.h" />
+    <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

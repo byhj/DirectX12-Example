@@ -6,7 +6,7 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 {
-	auto app = new byhj::RenderSystem;
+	auto app = new byhj::RenderSysem;
 	app->Run();
 	delete app;
 

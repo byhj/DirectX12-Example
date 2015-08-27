@@ -1,0 +1,12 @@
+﻿Build started 8/27/2015 2:22:07 PM.
+     1>Project "E:\GitHub\DirectX\DirectX12-Example\src\Basic-02-Triangle\Basic-02-Triangle.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(367,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(368,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (E:\GitHub\DirectX\DirectX12-Example\\temp\) contains files shared from another project (Basic-01-Window.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+     1>Link:
+         Basic-02-Triangle.vcxproj -> E:\GitHub\DirectX\DirectX12-Example\\bin\x86\Basic-02-Triangle.exe
+     1>Done Building Project "E:\GitHub\DirectX\DirectX12-Example\src\Basic-02-Triangle\Basic-02-Triangle.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.04
