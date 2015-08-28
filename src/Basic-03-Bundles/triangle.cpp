@@ -37,7 +37,7 @@ void Triangle::init_buffer(ComPtr<ID3D12Device> pD3D12Device)
 		// Define the geometry for a triangle.
 		Vertex triangleVertices[] =
 		{
-			{ {  0.0f,  0.5f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
+			{ {  0.0f,   0.5f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
 			{ {  0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
 			{ { -0.5f, -0.5f, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }
 		};

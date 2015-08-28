@@ -17,9 +17,12 @@ void RenderSysem::v_Init()
 	m_ScissorRect.bottom = static_cast<LONG>(m_ScreenHeight);
 
 	LoadPipeline();
-	LoadAssets();
+
 	m_Triangle.init_buffer(m_pD3D12Device);
 	m_Triangle.init_shader(m_pD3D12Device);
+
+	LoadAssets();
+
 }
 
 void RenderSysem::v_Update()
@@ -136,8 +139,9 @@ void RenderSysem::LoadPipeline()
 			rtvHandle.Offset(1, m_RTVDescriptorSize);
 		}
 	}
-	ThrowIfFailed(m_pD3D12Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_pCommandAllocator)));
 
+	ThrowIfFailed(m_pD3D12Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_pCommandAllocator)));
+	ThrowIfFailed(m_pD3D12Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_BUNDLE, IID_PPV_ARGS(&m_pBundleAllocator)));
 }
 
 
@@ -149,6 +153,17 @@ void RenderSysem::LoadAssets()
 	// Command lists are created in the recording state, but there is nothing
 	// to record yet. The main loop expects it to be closed, so close it now.
 	ThrowIfFailed(m_pCommandList->Close());
+
+	// Create and record the bundle.
+	{
+		auto pPipelineState = m_Triangle.GetPipelineState();
+		ThrowIfFailed(m_pD3D12Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_BUNDLE, m_pBundleAllocator.Get(), pPipelineState.Get(), IID_PPV_ARGS(&m_pBundleList)));
+		
+		m_Triangle.Render(m_pBundleList);
+
+		ThrowIfFailed(m_pBundleList->Close());
+	}
+
 
 	// Create synchronization objects.
 	{
@@ -185,6 +200,8 @@ void RenderSysem::PopulateCommandList()
 	auto pRootSignature = m_Triangle.GetRootSignature();
 	m_pCommandList->SetGraphicsRootSignature(pRootSignature.Get());
 
+//	ThrowIfFailed(m_pBundleList->Reset(m_pBundleAllocator.Get(), pPipelineState.Get()));
+
 	m_pCommandList->RSSetViewports(1, &m_Viewport);
 	m_pCommandList->RSSetScissorRects(1, &m_ScissorRect);
 	m_pCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_pRenderTargets[m_FrameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
@@ -196,13 +213,12 @@ void RenderSysem::PopulateCommandList()
 	const float clearColor[] ={ 0.0f, 0.2f, 0.4f, 1.0f };
 	m_pCommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
-	m_Triangle.Render(m_pCommandList);
+	m_pCommandList->ExecuteBundle(m_pBundleList.Get());
 
 	//pCIndicate that the back buffer will now be used to present.
 	m_pCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_pRenderTargets[m_FrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
 	ThrowIfFailed(m_pCommandList->Close());
-
 
 }
 
