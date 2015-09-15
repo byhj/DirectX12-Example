@@ -2,7 +2,7 @@
 #define RENDERSYSTEM_H
 
 #include "d3d/App.h"
-#include "window.h"
+#include "triangle.h"
 
 #include <d3d12.h>
 #include <wrl.h>
@@ -16,7 +16,7 @@ using namespace Microsoft::WRL;
 namespace byhj
 {
 
-class RenderSysem : public d3d::App
+class RenderSysem : public byhj::d3d::App
 {
 public:
 
@@ -33,6 +33,8 @@ private:
 	void LoadPipeline();
 
 	static const UINT FrameCount = 2;
+	D3D12_VIEWPORT m_Viewport;
+	D3D12_RECT m_ScissorRect;
 
 	ComPtr<IDXGISwapChain3>           m_pSwapChain;
 	ComPtr<ID3D12Device>              m_pD3D12Device;
@@ -41,7 +43,6 @@ private:
 	ComPtr<ID3D12CommandAllocator>    m_pCommandAllocator;
 	ComPtr<ID3D12CommandQueue>        m_pCommandQueue;
 	ComPtr<ID3D12DescriptorHeap>      m_pRTVHeap;
-	ComPtr<ID3D12PipelineState>       m_pPipelineState;
 	ComPtr<ID3D12GraphicsCommandList> m_pCommandList;
 
 	UINT   m_RTVDescriptorSize;
@@ -49,7 +50,7 @@ private:
 	HANDLE m_FenceEvent;
 	UINT64 m_FenceValue;
 
-	Window m_Window;
+	Triangle m_Triangle;
 };
 
 

@@ -11,6 +11,7 @@ void RenderSysem::v_Init()
 {
 	LoadPipeline();
 	LoadAssets();
+	m_Window.Init();
 }
 
 void RenderSysem::v_Update()
@@ -77,7 +78,8 @@ void RenderSysem::LoadPipeline()
 	queueDesc.Type  = D3D12_COMMAND_LIST_TYPE_DIRECT;
 	ThrowIfFailed(m_pD3D12Device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_pCommandQueue)));
 
-	//Describe and Create the swap chain
+////////////////////////////Describe and Create the swap chain///////////////////////////////////////
+	
 	DXGI_SWAP_CHAIN_DESC swapChainDesc ={};
 	swapChainDesc.BufferCount       = FrameCount;
 	swapChainDesc.BufferDesc.Width  = m_ScreenWidth;
@@ -89,9 +91,10 @@ void RenderSysem::LoadPipeline()
 	swapChainDesc.SampleDesc.Count  = 1;
 	swapChainDesc.Windowed          = TRUE;
 
+	// Swap chain needs the queue so that it can force a flush on it.
 	ComPtr<IDXGISwapChain> pSwapChain;
 	ThrowIfFailed(pFactory->CreateSwapChain(
-		m_pCommandQueue.Get(),		// Swap chain needs the queue so that it can force a flush on it.
+		m_pCommandQueue.Get(),		
 		&swapChainDesc,
 		&pSwapChain
 		)
@@ -101,7 +104,6 @@ void RenderSysem::LoadPipeline()
 	m_FrameIndex = m_pSwapChain->GetCurrentBackBufferIndex();
 
 ///////////////////////// Create Decriptor heaps /////////////////////////////////////////////
-
 
 	{
 		D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc ={};
@@ -115,7 +117,7 @@ void RenderSysem::LoadPipeline()
 
 	}
 
-	//Create frame resources
+///////////////////////////////////////Create frame resources///////////////////////////////////////
 	{
 		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_pRTVHeap->GetCPUDescriptorHandleForHeapStart());
 

@@ -1,29 +1,5 @@
-﻿Build started 8/27/2015 2:10:01 PM.
-     1>Project "E:\GitHub\DirectX\DirectX12-Example\src\Basic-01-Window\Basic-01-Window.vcxproj" on node 2 (Build target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(367,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(368,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (E:\GitHub\DirectX\DirectX12-Example\\temp\) contains files shared from another project (Basic-02-Triangle.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"E:\GitHub\DirectX\DirectX12-Example\\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"E:\GitHub\DirectX\DirectX12-Example\\temp\\" /Fd"E:\GitHub\DirectX\DirectX12-Example\\temp\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\include\d3d\App.cpp ..\..\include\d3d\Shader.cpp ..\..\include\d3d\Utility.cpp main.cpp RenderSystem.cpp window.cpp
-         window.cpp
-         RenderSystem.cpp
-         main.cpp
-         Utility.cpp
-         Shader.cpp
-         App.cpp
-     1>e:\github\directx\directx12-example\include\d3d\app.cpp(51): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-     1>e:\github\directx\directx12-example\include\d3d\app.cpp(52): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-         Generating Code...
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\GitHub\DirectX\DirectX12-Example\\bin\x86\Basic-01-Window.exe" /INCREMENTAL /NOLOGO /LIBPATH:"E:\GitHub\DirectX\DirectX12-Example\\lib\x86" dxgi.lib d3d12.lib d3dcompiler.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\GitHub\DirectX\DirectX12-Example\\bin\x86\Basic-01-Window.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\GitHub\DirectX\DirectX12-Example\\bin\x86\Basic-01-Window.lib" /MACHINE:X86 "E:\GitHub\DirectX\DirectX12-Example\\temp\App.obj"
-         "E:\GitHub\DirectX\DirectX12-Example\\temp\Shader.obj"
-         "E:\GitHub\DirectX\DirectX12-Example\\temp\Utility.obj"
-         "E:\GitHub\DirectX\DirectX12-Example\\temp\main.obj"
-         "E:\GitHub\DirectX\DirectX12-Example\\temp\RenderSystem.obj"
-         "E:\GitHub\DirectX\DirectX12-Example\\temp\window.obj"
-         Basic-01-Window.vcxproj -> E:\GitHub\DirectX\DirectX12-Example\\bin\x86\Basic-01-Window.exe
-     1>Done Building Project "E:\GitHub\DirectX\DirectX12-Example\src\Basic-01-Window\Basic-01-Window.vcxproj" (Build target(s)).
+﻿Build started 9/15/2015 9:50:08 AM.
 
 Build succeeded.
 
-Time Elapsed 00:00:03.18
+Time Elapsed 00:00:00.01

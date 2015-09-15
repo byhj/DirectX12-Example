@@ -16,7 +16,7 @@ class Triangle
 public:
 
 	void Init();
-	void Update(const XMFLOAT4X4 &World, const XMFLOAT4X4 &View, const XMFLOAT4X4 &Proj);
+	void Update();
 	void Render(ComPtr<ID3D12GraphicsCommandList> pCommandList);
 	void Shutdown();
 
@@ -28,13 +28,8 @@ public:
 	{
 		return m_pRootSignature;
 	}
-	ComPtr<ID3D12DescriptorHeap> GetCBVHeap()
-	{
-		return m_pCBVHeap;
-	}
 	void init_buffer(ComPtr<ID3D12Device> pD3D12Device);
 	void init_shader(ComPtr<ID3D12Device> pD3D12Device);
-
 private:
 
 
@@ -43,19 +38,9 @@ private:
 		XMFLOAT3 position;
 		XMFLOAT4 color;
 	};
-
-	struct OffsetBuffer
-	{
-		XMFLOAT4 offset;
-	};
-	OffsetBuffer m_Offset;
-	UINT8* m_pCbvDataBegin;
-
 	ComPtr<ID3D12PipelineState>  m_pPipelineState;
 	ComPtr<ID3D12RootSignature>  m_pRootSignature;
 	ComPtr<ID3D12Resource>       m_pVertexBuffer;
-	ComPtr<ID3D12DescriptorHeap> m_pCBVHeap;
-	ComPtr<ID3D12Resource>       m_pMatrixBuffer;
 	D3D12_VERTEX_BUFFER_VIEW     m_VertexBufferView;
 };
 

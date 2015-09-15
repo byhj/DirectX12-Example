@@ -136,7 +136,6 @@ void RenderSysem::LoadPipeline()
 			rtvHandle.Offset(1, m_RTVDescriptorSize);
 		}
 	}
-	//The command allocator is going to be used for allocating memory for the list of commands that we send to the GPU each frame to render graphics.
 	ThrowIfFailed(m_pD3D12Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_pCommandAllocator)));
 
 }
@@ -153,7 +152,6 @@ void RenderSysem::LoadAssets()
 
 	// Create synchronization objects.
 	{
-		// We use the fence as a signaling mechanism to notify us when the GPU is completely done rendering the command list that we submitted via the command queue
 		ThrowIfFailed(m_pD3D12Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_pD3D12Fence)));
 		m_FenceValue = 1;
 
