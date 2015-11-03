@@ -1,23 +1,21 @@
 #ifndef D3DAPP_H
 #define D3DAPP_H
 
-#include <string>
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
 #include <windowsx.h>
-
+#include <d2d1_3.h>
+#include <dwrite.h>
+#include <d3d11on12.h>
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <D3Dcompiler.h>
 #include <DirectXMath.h>
+#include "d3dx12.h"
 
-#include <ctime>
-#include <algorithm>
 #include <string>
-#include <sstream>
-#include <fstream>
-#include <vector>
+#include <wrl.h>
 
 
 namespace byhj  

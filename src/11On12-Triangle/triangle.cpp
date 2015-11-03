@@ -62,6 +62,7 @@ void Triangle::init_buffer(ComPtr<ID3D12Device> pD3D12Device)
 		memcpy(pVertexDataBegin, triangleVertices, sizeof(triangleVertices));
 		m_pVertexBuffer->Unmap(0, nullptr);
 
+
 		// Initialize the vertex buffer view.
 		m_VertexBufferView.BufferLocation = m_pVertexBuffer->GetGPUVirtualAddress();
 		m_VertexBufferView.StrideInBytes = sizeof(Vertex);

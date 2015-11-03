@@ -71,7 +71,7 @@ void RenderSysem::LoadPipeline()
 		ThrowIfFailed(D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_pD3D12Device)));
 	}
 
-///////////////////////	//Describe and Create the command queue//////////////////////////////////////////////
+///////////////////////¡¢¡¢/Describe and Create the command queue//////////////////////////////////////////////
 
 	D3D12_COMMAND_QUEUE_DESC queueDesc ={};
 	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
