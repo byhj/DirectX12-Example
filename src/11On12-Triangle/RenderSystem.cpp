@@ -16,11 +16,14 @@ void RenderSysem::v_Init()
 	m_ScissorRect.right = static_cast<LONG>(m_ScreenWidth);
 	m_ScissorRect.bottom = static_cast<LONG>(m_ScreenHeight);
 
+
 	LoadPipeline();
-	LoadAssets();
 
 	m_Triangle.init_buffer(m_pD3D12Device);
 	m_Triangle.init_shader(m_pD3D12Device);
+
+	LoadAssets();
+
 }
 
 void RenderSysem::v_Update()
@@ -37,10 +40,13 @@ void RenderSysem::v_Render()
 	ID3D12CommandList *ppCommandLists[] ={ m_pCommandList.Get() };
 	m_pCommandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
-	// Present the frame.
-	ThrowIfFailed(m_pSwapChain->Present(1, 0));
+	RenderUI();
 
-	WaitForGpu();
+	// Present the frame.
+	ThrowIfFailed(m_pSwapChain->Present(0, 0));
+
+	MoveToNextFrame();
+
 }
 
 void RenderSysem::v_Shutdown()
@@ -60,6 +66,7 @@ void RenderSysem::LoadPipeline()
 #ifdef _DEBUG
 	//Enagle the D2D debug layer
 	d2dFactoryOptions.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
+	// Enable the D3D11 debug layer.
 	d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 
 	//Enable the D3D12 debug layer
@@ -115,6 +122,7 @@ void RenderSysem::LoadPipeline()
 
 	ThrowIfFailed(pSwapChain.As(&m_pSwapChain));
 	m_FrameIndex = m_pSwapChain->GetCurrentBackBufferIndex();
+
 // Create an 11 deivce wrapped around the 12 device and share
 //12's command queue
 	ComPtr<ID3D11Device> d3d11Device;
@@ -130,6 +138,7 @@ void RenderSysem::LoadPipeline()
 		&m_pD3D11DeviceContext,
 		nullptr
 		));
+
 	//Query the 11on12 devie from the d3vice
 	ThrowIfFailed(d3d11Device.As(&m_pD3D11On12Device));
 
@@ -157,7 +166,6 @@ void RenderSysem::LoadPipeline()
 		dipY
 		);
 ///////////////////////// Create Decriptor heaps /////////////////////////////////////////////
-
 
 	{
 		D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc ={};
@@ -208,7 +216,7 @@ void RenderSysem::LoadPipeline()
 
 			rtvHandle.Offset(1, m_RTVDescriptorSize);
 
-			ThrowIfFailed(m_pD3D12Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_pCommandAllocator)));
+			ThrowIfFailed(m_pD3D12Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_pCommandAllocators[n])));
 
 		}
 	}
@@ -237,10 +245,10 @@ void RenderSysem::LoadAssets()
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	ThrowIfFailed(m_pD3D12Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_pCommandAllocator[m_FrameIndex].Get(), mPpipelineState.Get(), IID_PPV_ARGS(&m_pCommandList)));
+	ThrowIfFailed(m_pD3D12Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_pCommandAllocators[m_FrameIndex].Get(), m_Triangle.GetPipelineState().Get(), IID_PPV_ARGS(&m_pCommandList)));
 	
-	UpdateSubresources<1>(m_pCommandList.Get(), m_vertexBuffer.Get(), vertexBufferUpload.Get(), 0, 0, 1, &vertexData);
-	m_pCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_vertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
+//	UpdateSubresources<1>(m_pCommandList.Get(), m_vertexBuffer.Get(), vertexBufferUpload.Get(), 0, 0, 1, &vertexData);
+//	m_pCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_vertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
 
 
 	// Close the command list and execute it to begin the vertex buffer copy into the default heap/
@@ -273,13 +281,13 @@ void RenderSysem::PopulateCommandList()
 	// Command list allocators can only be reset when the associated 
 	// command lists have finished execution on the GPU; apps should use 
 	// fences to determine GPU execution progress.
-	ThrowIfFailed(m_pCommandAllocator->Reset());
+	ThrowIfFailed(m_pCommandAllocators[m_FrameIndex]->Reset());
 
 	// However, when ExecuteCommandList() is called on a particular command 
 	// list, that command list can then be reset at any time and must be before 
 	// re-recording.
 	auto pPipelineState = m_Triangle.GetPipelineState();
-	ThrowIfFailed(m_pCommandList->Reset(m_pCommandAllocator.Get(), pPipelineState.Get()));
+	ThrowIfFailed(m_pCommandList->Reset(m_pCommandAllocators[m_FrameIndex].Get(), pPipelineState.Get()));
 	auto pRootSignature = m_Triangle.GetRootSignature();
 	m_pCommandList->SetGraphicsRootSignature(pRootSignature.Get());
 
@@ -297,7 +305,11 @@ void RenderSysem::PopulateCommandList()
 	m_Triangle.Render(m_pCommandList);
 
 	//pCIndicate that the back buffer will now be used to present.
-	m_pCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_pRenderTargets[m_FrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+	//m_pCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_pRenderTargets[m_FrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+	
+	// Note: do not transition the render target to present here.
+	// the transition will occur when the wrapped 11On12 render
+	// target resource is released.
 
 	ThrowIfFailed(m_pCommandList->Close());
 

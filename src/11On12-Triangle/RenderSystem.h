@@ -55,8 +55,8 @@ private:
 	ComPtr<ID3D12Resource>            m_pRenderTargets[FrameCount];
 	ComPtr<ID3D11Resource>            m_pWrappedBackBuffers[FrameCount];
 	ComPtr<ID2D1Bitmap1>              m_pD2D1RenderTargets[FrameCount];
-	
-	ComPtr<ID3D12CommandAllocator>    m_pCommandAllocator;
+	ComPtr<ID3D12CommandAllocator>    m_pCommandAllocators[FrameCount];
+
 	ComPtr<ID3D12CommandQueue>        m_pCommandQueue;
 	ComPtr<ID3D12DescriptorHeap>      m_pRTVHeap;
 	ComPtr<ID3D12GraphicsCommandList> m_pCommandList;

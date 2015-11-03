@@ -28,6 +28,7 @@ public:
 	{
 		return m_pRootSignature;
 	}
+
 	void init_buffer(ComPtr<ID3D12Device> pD3D12Device);
 	void init_shader(ComPtr<ID3D12Device> pD3D12Device);
 private:
